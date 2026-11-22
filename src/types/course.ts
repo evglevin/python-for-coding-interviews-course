@@ -84,4 +84,4 @@ export interface SolutionTab {
   code: string;
 }
 
-export type RuntimeStatus = 'loading' | 'ready' | 'running' | 'error';
+export type RuntimeStatus = 'idle' | 'loading' | 'ready' | 'running' | 'error';

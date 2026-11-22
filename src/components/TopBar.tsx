@@ -13,6 +13,7 @@ import {
   Github,
 } from 'lucide-react';
 import type { Section } from '../types/course';
+import { isPlainLeftClick, lessonPath } from '../lib/lessonUrl';
 
 interface TopBarProps {
   section: Section;
@@ -20,8 +21,8 @@ interface TopBarProps {
   sectionTotal: number;
   totalLessons: number;
   solvedCount: number;
-  hasPrev: boolean;
-  hasNext: boolean;
+  prevLessonId: string | null;
+  nextLessonId: string | null;
   onPrev: () => void;
   onNext: () => void;
   sidebarOpen: boolean;
@@ -44,8 +45,8 @@ export const TopBar = React.memo(function TopBar({
   sectionTotal,
   totalLessons,
   solvedCount,
-  hasPrev,
-  hasNext,
+  prevLessonId,
+  nextLessonId,
   onPrev,
   onNext,
   sidebarOpen,
@@ -118,24 +119,56 @@ export const TopBar = React.memo(function TopBar({
         {!sidebarOpen && (
           <>
             <div className="flex shrink-0 items-center gap-0.5">
-              <button
-                type="button"
-                onClick={onPrev}
-                disabled={!hasPrev}
-                className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
-                title="Previous lesson"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={onNext}
-                disabled={!hasNext}
-                className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
-                title="Next lesson"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
+              {prevLessonId ? (
+                <a
+                  href={lessonPath(prevLessonId)}
+                  onClick={(e) => {
+                    if (!isPlainLeftClick(e)) return;
+                    e.preventDefault();
+                    onPrev();
+                  }}
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] cursor-pointer"
+                  title="Previous lesson"
+                  aria-label="Previous lesson"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] disabled:opacity-30 disabled:pointer-events-none"
+                  title="Previous lesson"
+                  aria-label="Previous lesson"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+              )}
+              {nextLessonId ? (
+                <a
+                  href={lessonPath(nextLessonId)}
+                  onClick={(e) => {
+                    if (!isPlainLeftClick(e)) return;
+                    e.preventDefault();
+                    onNext();
+                  }}
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] transition-colors hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] cursor-pointer"
+                  title="Next lesson"
+                  aria-label="Next lesson"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  className="flex h-7 w-7 items-center justify-center rounded-md text-[var(--text-secondary)] disabled:opacity-30 disabled:pointer-events-none"
+                  title="Next lesson"
+                  aria-label="Next lesson"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              )}
             </div>
 
             <div className="ml-1 flex min-w-0 items-center gap-1.5 text-xs">

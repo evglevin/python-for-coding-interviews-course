@@ -20,6 +20,17 @@ export function lessonPath(lessonId: string): string {
   return LESSON_PATH_PREFIX + encodeURIComponent(lessonId);
 }
 
+/** True for an unmodified primary click that should be handled in-app instead of opening a new tab. */
+export function isPlainLeftClick(e: {
+  button: number;
+  metaKey: boolean;
+  ctrlKey: boolean;
+  shiftKey: boolean;
+  altKey: boolean;
+}): boolean {
+  return e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
+}
+
 /** Points the current history entry at a lesson, without adding a new entry. */
 export function showLessonInUrl(lessonId: string): void {
   const path = lessonPath(lessonId);

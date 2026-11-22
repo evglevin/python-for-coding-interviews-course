@@ -36,6 +36,7 @@ import {
   saveWelcomeSeen,
 } from './lib/storage';
 import { lessonIdFromUrl, pushLessonUrl, showLessonInUrl } from './lib/lessonUrl';
+import { updateDocumentSeo } from './lib/seo';
 import {
   copyProgressLink,
   decodeProgress,
@@ -94,10 +95,13 @@ const ResizeGutter: React.FC<{ onPointerDown: (e: React.PointerEvent) => void; t
 export default function App({
   initialTheme,
   initialLessonId,
+  enteredViaLessonUrl,
   incomingProgress: initialIncomingProgress,
 }: {
   initialTheme: 'dark' | 'light';
   initialLessonId: string;
+  /** False when opened at `/` so the home page keeps its canonical metadata through initial mount. */
+  enteredViaLessonUrl: boolean;
   /** Progress from a link the page was opened with, awaiting the learner's decision. */
   incomingProgress: IncomingProgress | null;
 }) {
@@ -108,6 +112,9 @@ export default function App({
   const [incomingProgress, setIncomingProgress] = useState(initialIncomingProgress);
 
   const [activeLessonId, setActiveLessonId] = useState(initialLessonId);
+  const activeLessonIdRef = useRef(activeLessonId);
+  activeLessonIdRef.current = activeLessonId;
+  const hasLessonSeoRef = useRef(enteredViaLessonUrl);
 
   // Phone layout: one pane at a time, and the lessons list slides over the content.
   const isMobile = useIsMobile();
@@ -190,6 +197,8 @@ export default function App({
       if (lesson.sectionId !== currentLesson.sectionId) {
         setSectionCollapsed(lesson.sectionId, false);
       }
+      hasLessonSeoRef.current = true;
+      activeLessonIdRef.current = lesson.id;
       setActiveLessonId(lesson.id);
       saveActiveLessonId(lesson.id);
       if (!fromHistory) pushLessonUrl(lesson.id);
@@ -200,6 +209,24 @@ export default function App({
     },
     [activeLessonId, currentLesson.sectionId, openTab, setSectionCollapsed, updateTabs]
   );
+
+  // Keep document title, description, and canonical synced once viewing a lesson route.
+  // When entered at `/`, leave the home page's canonical & head metadata intact through initial mount.
+  useEffect(() => {
+    if (!hasLessonSeoRef.current) return;
+    updateDocumentSeo(currentLesson, currentSection);
+  }, [currentLesson, currentSection]);
+
+  // Defer loading Pyodide WASM until the user first interacts so initial page load stays fast.
+  useEffect(() => {
+    const startRuntime = () => pyodideRunner.warmup();
+    window.addEventListener('pointerdown', startRuntime, { once: true, passive: true });
+    window.addEventListener('keydown', startRuntime, { once: true, passive: true });
+    return () => {
+      window.removeEventListener('pointerdown', startRuntime);
+      window.removeEventListener('keydown', startRuntime);
+    };
+  }, []);
 
   // Browser Back/Forward changes the URL; open the lesson it now names.
   useEffect(() => {
@@ -278,26 +305,31 @@ export default function App({
 
   const executeCode = useCallback(
     async (mode: 'run' | 'submit') => {
-      if (runtimeStatus === 'loading' || runtimeStatus === 'running') return;
+      if (runtimeStatus === 'running') return;
       setConsoleOpen(true);
+      const lesson = currentLesson;
       const tabs = tabsRef.current;
       const tab = tabs.find((t) => t.id === activeTabId) ?? tabs[0];
       const res = await pyodideRunner.execute({
         mode,
         code: tab.code,
-        expectedOutput: currentLesson.expectedOutput,
-        testCases: currentLesson.testCases,
+        expectedOutput: lesson.expectedOutput,
+        testCases: lesson.testCases,
       });
-      setRunResult(res);
 
       if (mode === 'submit' && res.allTestsPassed) {
         setSolvedIds((prev) => {
-          if (prev.has(currentLesson.id)) return prev;
+          if (prev.has(lesson.id)) return prev;
           const next = new Set(prev);
-          next.add(currentLesson.id);
+          next.add(lesson.id);
           saveSolvedIds(next);
           return next;
         });
+      }
+
+      // Ignore stale console results if the learner switched lessons while Python was starting/running.
+      if (activeLessonIdRef.current === lesson.id) {
+        setRunResult(res);
       }
     },
     [activeTabId, currentLesson, runtimeStatus]
@@ -316,16 +348,16 @@ export default function App({
   }, []);
 
   const currentIdx = currentLesson.index;
-  const hasPrev = currentIdx > 0;
-  const hasNext = currentIdx < LESSONS.length - 1;
+  const prevLessonId = currentIdx > 0 ? LESSONS[currentIdx - 1].id : null;
+  const nextLessonId = currentIdx < LESSONS.length - 1 ? LESSONS[currentIdx + 1].id : null;
 
   const goToPrev = useCallback(() => {
-    if (hasPrev) selectLesson(LESSONS[currentIdx - 1].id);
-  }, [hasPrev, currentIdx, selectLesson]);
+    if (prevLessonId) selectLesson(prevLessonId);
+  }, [prevLessonId, selectLesson]);
 
   const goToNext = useCallback(() => {
-    if (hasNext) selectLesson(LESSONS[currentIdx + 1].id);
-  }, [hasNext, currentIdx, selectLesson]);
+    if (nextLessonId) selectLesson(nextLessonId);
+  }, [nextLessonId, selectLesson]);
 
   const handleResetProgress = useCallback(() => {
     clearAllProgress();
@@ -485,8 +517,8 @@ export default function App({
         sectionTotal={sectionLessons.length}
         totalLessons={LESSONS.length}
         solvedCount={solvedIds.size}
-        hasPrev={hasPrev}
-        hasNext={hasNext}
+        prevLessonId={prevLessonId}
+        nextLessonId={nextLessonId}
         onPrev={goToPrev}
         onNext={goToNext}
         sidebarOpen={isMobile ? drawerOpen : sidebarOpen}
@@ -610,7 +642,7 @@ export default function App({
               onRun={handleRun}
               onSubmit={handleSubmit}
               onStop={handleStop}
-              hasNextLesson={hasNext}
+              hasNextLesson={nextLessonId !== null}
               onNextLesson={handleNextLessonFromConsole}
             />
           </div>

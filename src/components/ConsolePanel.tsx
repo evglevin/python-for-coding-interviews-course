@@ -11,6 +11,7 @@ import {
   ArrowRight,
   FlaskConical,
   AlertTriangle,
+  Loader2,
 } from 'lucide-react';
 import type { RunResult, RuntimeStatus } from '../types/course';
 import { PanelTab } from './PanelTab';
@@ -63,7 +64,6 @@ export const ConsolePanel = React.memo(function ConsolePanel({
   }
 
   const isRunning = runtimeStatus === 'running';
-  const isDisabled = runtimeStatus === 'loading' || runtimeStatus === 'error';
 
   const passedTests = tests.filter((t) => t.passed).length;
   const totalTests = tests.length;
@@ -129,7 +129,12 @@ export const ConsolePanel = React.memo(function ConsolePanel({
 
           {/* Console Body */}
           <div className="min-h-0 flex-1 overflow-y-auto p-3.5 text-sm">
-            {!result ? (
+            {isRunning && !result ? (
+              <div className="flex h-full items-center justify-center gap-2 text-xs text-[var(--text-muted)]">
+                <Loader2 className="h-4 w-4 animate-spin text-accent" />
+                <span>Running Python...</span>
+              </div>
+            ) : !result ? (
               <div className="flex h-full flex-col items-center justify-center gap-1.5 text-center text-xs text-[var(--text-muted)]">
                 <p>Click <strong className="text-[var(--text-secondary)]">Run</strong><span className="hidden md:inline"> (<kbd className="rounded border border-[var(--border-strong)] px-1 py-0.5 font-mono text-[10px]">⌘/Ctrl + Enter</kbd>)</span> to execute your Python code,</p>
                 <p>or <strong className="text-[var(--text-secondary)]">Submit</strong><span className="hidden md:inline"> (<kbd className="rounded border border-[var(--border-strong)] px-1 py-0.5 font-mono text-[10px]">⌘/Ctrl + Shift + Enter</kbd>)</span> to run all test cases.</p>
@@ -424,8 +429,7 @@ export const ConsolePanel = React.memo(function ConsolePanel({
               <button
                 type="button"
                 onClick={onRun}
-                disabled={isDisabled}
-                className="flex items-center gap-1.5 rounded-md border px-3.5 py-1.5 text-xs font-semibold transition-colors hover:bg-[var(--bg-hover)] disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+                className="flex items-center gap-1.5 rounded-md border px-3.5 py-1.5 text-xs font-semibold transition-colors hover:bg-[var(--bg-hover)] cursor-pointer"
                 style={{
                   borderColor: 'var(--border-strong)',
                   backgroundColor: 'var(--bg-elevated)',
@@ -440,8 +444,7 @@ export const ConsolePanel = React.memo(function ConsolePanel({
               <button
                 type="button"
                 onClick={onSubmit}
-                disabled={isDisabled}
-                className="flex items-center gap-1.5 rounded-md bg-[#2b8a57] px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#239c5b] disabled:opacity-40 disabled:pointer-events-none cursor-pointer"
+                className="flex items-center gap-1.5 rounded-md bg-[#2b8a57] px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#239c5b] cursor-pointer"
                 title="Run all tests & submit (Cmd/Ctrl + Shift + Enter)"
               >
                 <Send className="h-3.5 w-3.5" />

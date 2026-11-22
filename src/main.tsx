@@ -24,7 +24,8 @@ document.documentElement.classList.toggle('dark', initialTheme === 'dark');
 mountPythonHighlighting(document);
 
 // A lesson link in the URL wins over the lesson last opened on this device.
-const initialLessonId = lessonIdFromUrl() ?? getLessonById(loadActiveLessonId() ?? '').id;
+const urlLessonId = lessonIdFromUrl();
+const initialLessonId = urlLessonId ?? getLessonById(loadActiveLessonId() ?? '').id;
 saveActiveLessonId(initialLessonId);
 showLessonInUrl(initialLessonId);
 
@@ -34,6 +35,7 @@ function render(incomingProgress: IncomingProgress | null) {
       <App
         initialTheme={initialTheme}
         initialLessonId={initialLessonId}
+        enteredViaLessonUrl={urlLessonId !== null}
         incomingProgress={incomingProgress}
       />
     </StrictMode>

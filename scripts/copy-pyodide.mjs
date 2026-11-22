@@ -5,12 +5,20 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 const srcDir = path.join(rootDir, 'node_modules', 'pyodide');
-const destDir = path.join(rootDir, 'public', 'pyodide');
+const pyodideBaseDir = path.join(rootDir, 'public', 'pyodide');
 
 if (!fs.existsSync(srcDir)) {
   console.log('[copy-pyodide] node_modules/pyodide not found yet, skipping.');
   process.exit(0);
 }
+
+const pyodidePkg = JSON.parse(fs.readFileSync(path.join(srcDir, 'package.json'), 'utf8'));
+const version = pyodidePkg.version;
+if (!version) {
+  throw new Error('[copy-pyodide] Could not read pyodide version from package.json');
+}
+
+const destDir = path.join(pyodideBaseDir, version);
 
 const filesToCopy = [
   'pyodide.mjs',
@@ -21,6 +29,13 @@ const filesToCopy = [
 ];
 
 fs.mkdirSync(destDir, { recursive: true });
+
+// Remove stale unversioned files or previous pyodide version folders so dist/ stays clean.
+for (const entry of fs.readdirSync(pyodideBaseDir)) {
+  if (entry !== version) {
+    fs.rmSync(path.join(pyodideBaseDir, entry), { recursive: true, force: true });
+  }
+}
 
 let copied = 0;
 for (const file of filesToCopy) {
@@ -39,5 +54,5 @@ for (const file of filesToCopy) {
 }
 
 if (copied > 0) {
-  console.log(`[copy-pyodide] Copied ${copied} Pyodide runtime files to public/pyodide/`);
+  console.log(`[copy-pyodide] Copied ${copied} Pyodide runtime files to public/pyodide/${version}/`);
 }

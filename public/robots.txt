@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /pyodide/
+
+Sitemap: https://python.evgenylevin.com/sitemap.xml

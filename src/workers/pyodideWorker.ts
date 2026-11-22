@@ -31,8 +31,11 @@ let runtimePromise: Promise<RunUserCode> | null = null;
 /** Loads Pyodide, installs the sortedcontainers polyfill and the grading harness (once). */
 function initRuntime(): Promise<RunUserCode> {
   runtimePromise ??= (async () => {
-    // Resolve against Vite's base so the app also works when deployed under a subpath.
-    const indexURL = new URL(`${import.meta.env.BASE_URL}pyodide/`, self.location.origin).href;
+    // Resolve against Vite's base and installed Pyodide version so immutable caching never mixes versions.
+    const indexURL = new URL(
+      `${import.meta.env.BASE_URL}pyodide/${__PYODIDE_VERSION__}/`,
+      self.location.origin
+    ).href;
     const mod = await import(/* @vite-ignore */ `${indexURL}pyodide.mjs`);
     const pyodide: PyodideAPI = await mod.loadPyodide({ indexURL });
 

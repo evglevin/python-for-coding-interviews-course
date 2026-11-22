@@ -8,6 +8,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import type { Lesson, Section } from '../types/course';
+import { isPlainLeftClick, lessonPath } from '../lib/lessonUrl';
 
 interface CurriculumSidebarProps {
   sections: Section[];
@@ -24,7 +25,7 @@ interface CurriculumSidebarProps {
   width: number | string;
 }
 
-function scrollActiveLessonIntoView(item: HTMLButtonElement | null) {
+function scrollActiveLessonIntoView(item: HTMLElement | null) {
   item?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
@@ -225,12 +226,17 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
                         const isCurrent = lesson.id === currentLesson.id;
 
                         return (
-                          <button
+                          <a
                             key={lesson.id}
                             ref={isCurrent ? scrollActiveLessonIntoView : undefined}
-                            type="button"
-                            onClick={() => onSelectLesson(lesson.id)}
-                            className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm md:py-1.5 md:text-[13px] transition-colors cursor-pointer ${
+                            href={lessonPath(lesson.id)}
+                            aria-current={isCurrent ? 'page' : undefined}
+                            onClick={(e) => {
+                              if (!isPlainLeftClick(e)) return;
+                              e.preventDefault();
+                              onSelectLesson(lesson.id);
+                            }}
+                            className={`flex w-full items-center gap-2 rounded-md px-2 py-2 text-left text-sm no-underline md:py-1.5 md:text-[13px] transition-colors cursor-pointer ${
                               isCurrent
                                 ? 'ring-1 ring-inset ring-accent/60 font-semibold text-[var(--text-primary)]'
                                 : 'font-normal text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
@@ -262,7 +268,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
                             {isSolved && (
                               <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500 stroke-[2.5]" />
                             )}
-                          </button>
+                          </a>
                         );
                       })}
                     </div>

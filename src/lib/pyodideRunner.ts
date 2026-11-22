@@ -15,7 +15,7 @@ const EXECUTION_TIMEOUT_MS = 6000;
 
 class PyodideRunner {
   private worker: Worker | null = null;
-  private snapshot: { status: RuntimeStatus; error?: string } = { status: 'loading' };
+  private snapshot: { status: RuntimeStatus; error?: string } = { status: 'idle' };
   private listeners = new Set<() => void>();
   private requestCounter = 0;
   /** At most one execution is in flight; stop and timeout replace the worker. */
@@ -23,7 +23,9 @@ class PyodideRunner {
   /** Settles once the current worker has finished (or failed) loading Pyodide. */
   private ready: Promise<void> = Promise.resolve();
 
-  constructor() {
+  /** Starts loading Pyodide in the background once the user begins interacting. */
+  public warmup(): void {
+    if (this.worker || this.snapshot.status !== 'idle') return;
     this.spawnWorker();
   }
 
