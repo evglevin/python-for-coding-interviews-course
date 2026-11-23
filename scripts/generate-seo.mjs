@@ -93,7 +93,7 @@ function renderCurriculumNav(sections, lessons) {
 }
 
 function renderHomeFallback(sections, lessons, defaultDescription) {
-  return `<main style="height:100%;overflow-y:auto;padding:32px 24px;max-width:860px;margin:0 auto;color:#c4c4cc;font-family:system-ui,-apple-system,sans-serif;line-height:1.65">
+  return `<main data-prerender style="height:100%;overflow-y:auto;padding:32px 24px;max-width:860px;margin:0 auto;color:#c4c4cc;font-family:system-ui,-apple-system,sans-serif;line-height:1.65">
   <h1 style="margin:0 0 12px;font-size:28px;color:#f4f4f5">Python for Coding Interviews — Interactive Course</h1>
   <p style="margin:0 0 24px">${escapeHtml(defaultDescription)}</p>
   <nav aria-label="Course Curriculum">
@@ -143,7 +143,7 @@ function renderLessonFallback(lesson, section, prevLesson, nextLesson, sections,
     ? `<a href="/lessons/${encodeURIComponent(nextLesson.id)}" style="color:#82b2ff">Next: ${escapeHtml(nextLesson.title)} &rarr;</a>`
     : '<span></span>';
 
-  return `<main style="height:100%;overflow-y:auto;padding:32px 24px;max-width:860px;margin:0 auto;color:#c4c4cc;font-family:system-ui,-apple-system,sans-serif;line-height:1.65">
+  return `<main data-prerender style="height:100%;overflow-y:auto;padding:32px 24px;max-width:860px;margin:0 auto;color:#c4c4cc;font-family:system-ui,-apple-system,sans-serif;line-height:1.65">
   <nav aria-label="Breadcrumb" style="font-size:13px;color:#8b8b96;margin-bottom:12px">
     <a href="/" style="color:#82b2ff;text-decoration:none">Python for Coding Interviews</a> &rsaquo;
     <span>Section ${section.number}: ${escapeHtml(section.shortTitle)}</span> &rsaquo;

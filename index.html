@@ -51,6 +51,25 @@
       name="twitter:image:alt"
       content="Python for Coding Interviews — Interactive crash course with 40 hands-on lessons covering essential Python syntax, data structures, and idioms in the browser"
     />
+
+    <script>
+      // Runs before first paint. Applies the saved theme (main.tsx keeps it in sync after) and marks
+      // that JS is on, so the crawler-only pre-rendered HTML in #root never flashes before React mounts.
+      (function () {
+        var root = document.documentElement;
+        var theme = null;
+        try {
+          theme = localStorage.getItem('py_interviews_theme_v1');
+        } catch (e) {}
+        root.classList.toggle('dark', theme !== 'light');
+        root.classList.add('js');
+      })();
+    </script>
+    <style>
+      .js [data-prerender] {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
