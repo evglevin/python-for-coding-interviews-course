@@ -50,6 +50,7 @@ import { ConsolePanel } from './components/ConsolePanel';
 import { CurriculumSidebar } from './components/CurriculumSidebar';
 import { WelcomeDialog } from './components/WelcomeDialog';
 import { ImportProgressDialog } from './components/ImportProgressDialog';
+import { ConfettiOverlay } from './components/ConfettiOverlay';
 import { useIsMobile } from './lib/useIsMobile';
 import { BookOpen, Code2, X } from 'lucide-react';
 
@@ -108,6 +109,9 @@ export default function App({
   const [theme, setTheme] = useState(initialTheme);
   const [fontSize, setFontSize] = useState<number>(() => loadFontSize());
   const [solvedIds, setSolvedIds] = useState<Set<string>>(() => loadSolvedIds());
+  const solvedIdsRef = useRef(solvedIds);
+  solvedIdsRef.current = solvedIds;
+  const [showConfetti, setShowConfetti] = useState(false);
   const [showWelcome, setShowWelcome] = useState<boolean>(() => !loadWelcomeSeen());
   const [incomingProgress, setIncomingProgress] = useState(initialIncomingProgress);
 
@@ -318,13 +322,18 @@ export default function App({
       });
 
       if (mode === 'submit' && res.allTestsPassed) {
-        setSolvedIds((prev) => {
-          if (prev.has(lesson.id)) return prev;
+        const prev = solvedIdsRef.current;
+        if (!prev.has(lesson.id)) {
           const next = new Set(prev);
           next.add(lesson.id);
+          solvedIdsRef.current = next;
           saveSolvedIds(next);
-          return next;
-        });
+          setSolvedIds(next);
+
+          if (LESSONS.length > 0 && LESSONS.every((l) => next.has(l.id))) {
+            setShowConfetti(true);
+          }
+        }
       }
 
       // Ignore stale console results if the learner switched lessons while Python was starting/running.
@@ -361,7 +370,10 @@ export default function App({
 
   const handleResetProgress = useCallback(() => {
     clearAllProgress();
-    setSolvedIds(new Set());
+    const empty = new Set<string>();
+    solvedIdsRef.current = empty;
+    setSolvedIds(empty);
+    setShowConfetti(false);
     const next = defaultTabs(currentLesson.starterCode);
     updateTabs(next);
     if (activeTabId === next[0].id) editorRef.current?.replaceCode(next[0].code);
@@ -382,7 +394,9 @@ export default function App({
           setIncomingProgress({ status: result === 'partial' ? 'savePartial' : 'saveFailed' });
           return;
         }
-        setSolvedIds(new Set(incomingProgress.progress.solved));
+        const importedSolved = new Set(incomingProgress.progress.solved);
+        solvedIdsRef.current = importedSolved;
+        setSolvedIds(importedSolved);
         const next = loadLessonTabs(currentLesson.id, currentLesson.starterCode);
         updateTabs(next);
         openTab(next[0]);
@@ -455,6 +469,7 @@ export default function App({
 
   const handleToggleExpand = useCallback(() => setEditorExpanded((e) => !e), []);
   const handleToggleConsole = useCallback(() => setConsoleOpen((o) => !o), []);
+  const handleConfettiComplete = useCallback(() => setShowConfetti(false), []);
 
   // Pane resizing
   const handleSidebarDrag = (e: React.PointerEvent) => {
@@ -689,6 +704,7 @@ export default function App({
         )
       )}
 
+      {showConfetti && <ConfettiOverlay onComplete={handleConfettiComplete} />}
     </div>
   );
 }
