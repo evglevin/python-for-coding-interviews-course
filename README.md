@@ -37,3 +37,7 @@ npm run dev
 - `npm run dev` — Start local development server on `http://localhost:5173`
 - `npm run build` — Type-check and create production build
 - `npm run verify` — Run automated Python verification across all 40 lessons
+
+## License
+
+[MIT](LICENSE) © 2026 Evgenii Levin
