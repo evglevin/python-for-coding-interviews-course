@@ -31,7 +31,7 @@ interface TopBarProps {
   onToggleTheme: () => void;
 }
 
-const REPO_URL = 'https://github.com/evglevin/learn-python-for-coding-interviews';
+const REPO_URL = 'https://github.com/evglevin/python-for-coding-interviews-course';
 
 function formatSeconds(totalSeconds: number): string {
   const mins = Math.floor(totalSeconds / 60);
