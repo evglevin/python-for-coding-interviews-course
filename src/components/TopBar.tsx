@@ -83,7 +83,7 @@ export const TopBar = React.memo(function TopBar({
   }, [clearTimer]);
 
   const progressRatio = totalLessons > 0 ? solvedCount / totalLessons : 0;
-  const radius = 11;
+  const radius = 7.5;
   const circumference = 2 * Math.PI * radius;
   const dashOffset = circumference * (1 - progressRatio);
 
@@ -101,15 +101,64 @@ export const TopBar = React.memo(function TopBar({
         <button
           type="button"
           onClick={onToggleSidebar}
-          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] cursor-pointer ${
-            sidebarOpen ? 'bg-[var(--bg-elevated)]' : ''
+          className={`flex h-7 shrink-0 items-center justify-center rounded-md border text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)] cursor-pointer ${
+            sidebarOpen
+              ? 'w-7 border-transparent bg-[var(--bg-elevated)]'
+              : 'gap-1.5 border-[var(--border-subtle)] bg-[var(--bg-elevated)] pl-1.5 pr-2'
           }`}
-          title={sidebarOpen ? 'Hide lessons sidebar' : 'Show lessons sidebar'}
+          title={
+            sidebarOpen
+              ? 'Hide lessons sidebar'
+              : `Show lessons sidebar (${solvedCount}/${totalLessons} solved)`
+          }
+          aria-label={
+            sidebarOpen
+              ? 'Hide lessons sidebar'
+              : `Show lessons sidebar, ${solvedCount} of ${totalLessons} lessons solved`
+          }
         >
           {sidebarOpen ? (
             <PanelLeftClose className="h-4 w-4" />
           ) : (
-            <PanelLeft className="h-4 w-4" />
+            <>
+              <PanelLeft className="h-4 w-4 shrink-0" />
+              <span
+                className="h-3.5 w-px shrink-0 bg-[var(--border-strong)]"
+                aria-hidden="true"
+              />
+              <span className="flex items-center gap-1.5">
+                <svg
+                  className="h-4 w-4 shrink-0 -rotate-90"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx="10"
+                    cy="10"
+                    r={radius}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    className="text-[var(--border-strong)]"
+                  />
+                  <circle
+                    cx="10"
+                    cy="10"
+                    r={radius}
+                    fill="none"
+                    stroke="#22c55e"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={dashOffset}
+                    className="transition-all duration-300"
+                  />
+                </svg>
+                <span className="font-mono text-xs font-medium leading-none tabular-nums text-[var(--text-primary)]">
+                  {solvedCount}/{totalLessons}
+                </span>
+              </span>
+            </>
           )}
         </button>
         <span className="hidden truncate px-1 text-sm font-medium text-[var(--text-primary)] sm:inline">
@@ -268,45 +317,6 @@ export const TopBar = React.memo(function TopBar({
         >
           <Github className="h-4 w-4" aria-hidden="true" />
         </a>
-
-        {/* Progress Ring Button */}
-        <button
-          type="button"
-          onClick={onToggleSidebar}
-          className="flex items-center gap-2 rounded-full border px-1.5 py-1 text-xs font-medium sm:px-2.5 transition-colors hover:bg-[var(--bg-hover)] cursor-pointer"
-          style={{
-            borderColor: 'var(--border-subtle)',
-            backgroundColor: 'var(--bg-elevated)',
-          }}
-          title={sidebarOpen ? 'Hide lessons sidebar' : 'Show lessons sidebar'}
-        >
-          <svg className="h-6 w-6 -rotate-90" viewBox="0 0 28 28">
-            <circle
-              cx="14"
-              cy="14"
-              r={radius}
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              className="text-[var(--border-strong)]"
-            />
-            <circle
-              cx="14"
-              cy="14"
-              r={radius}
-              fill="none"
-              stroke="#22c55e"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeDasharray={circumference}
-              strokeDashoffset={dashOffset}
-              className="transition-all duration-300"
-            />
-          </svg>
-          <span className="font-mono text-xs text-[var(--text-primary)]">
-            {solvedCount}/{totalLessons}
-          </span>
-        </button>
       </div>
     </header>
   );
