@@ -7,6 +7,7 @@ import { SECTION_5_2D_LISTS } from './sections/section5-2d-lists';
 import { SECTION_6_HASHMAPS_HASHSETS } from './sections/section6-hashmaps-hashsets';
 import { SECTION_7_HEAPS } from './sections/section7-heaps';
 import { SECTION_8_SORTED_CONTAINERS } from './sections/section8-sorted-containers';
+import { SECTION_9_CLASSES_AND_RECURSION } from './sections/section9-classes-and-recursion';
 
 export const SECTIONS: Section[] = [
   { id: 'sorting', number: 1, shortTitle: 'Sorting' },
@@ -17,6 +18,7 @@ export const SECTIONS: Section[] = [
   { id: 'hashmaps-and-hashsets', number: 6, shortTitle: 'Hashmaps and Hashsets' },
   { id: 'heaps', number: 7, shortTitle: 'Heaps / Priority Queues' },
   { id: 'sorted-dicts-and-sets', number: 8, shortTitle: 'Sorted Dicts and Sorted Sets' },
+  { id: 'classes-and-recursion', number: 9, shortTitle: 'Classes and Recursion' },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -28,6 +30,7 @@ export const LESSONS: Lesson[] = [
   ...SECTION_6_HASHMAPS_HASHSETS,
   ...SECTION_7_HEAPS,
   ...SECTION_8_SORTED_CONTAINERS,
+  ...SECTION_9_CLASSES_AND_RECURSION,
 ].map((lesson, index) => ({ ...lesson, index }));
 
 export function getSectionById(sectionId: string): Section {

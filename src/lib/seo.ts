@@ -4,10 +4,10 @@ export const SITE_URL = 'https://python.evgenylevin.com';
 export const SITE_NAME = 'Python for Coding Interviews';
 export const DEFAULT_TITLE = 'Python for Coding Interviews — Interactive Course';
 export const DEFAULT_DESCRIPTION =
-  'A fast, interactive Python crash course to prepare for coding interviews: 40 hands-on lessons covering the essential syntax, data structures, and idioms.';
+  'A fast, interactive Python crash course to prepare for coding interviews: 45 hands-on lessons covering the essential syntax, data structures, and idioms.';
 export const OG_IMAGE_URL = `${SITE_URL}/og-image.png`;
 export const OG_IMAGE_ALT =
-  'Python for Coding Interviews — Interactive crash course with 40 hands-on lessons covering essential Python syntax, data structures, and idioms in the browser';
+  'Python for Coding Interviews — Interactive crash course with 45 hands-on lessons covering essential Python syntax, data structures, and idioms in the browser';
 
 /** Strips lightweight inline markdown (`code`, **bold**, *italic*) for plain-text metadata. */
 export function stripInlineMarkdown(text: string): string {

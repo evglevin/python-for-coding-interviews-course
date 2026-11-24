@@ -1,6 +1,6 @@
 # Python for Coding Interviews — Local Interactive Course
 
-A completely local, offline-capable interactive Python course covering all **40 lessons across 8 sections** for coding interview preparation — with in-browser Python execution (Pyodide WebAssembly), CodeMirror 6 Python syntax highlighting, unit test grading, progressive hints, and persistent progress tracking.
+A completely local, offline-capable interactive Python course covering all **45 lessons across 9 sections** for coding interview preparation — with in-browser Python execution (Pyodide WebAssembly), CodeMirror 6 Python syntax highlighting, unit test grading, progressive hints, and persistent progress tracking.
 
 <img width="3456" height="2234" alt="python-for-coding-interviews-mbp16" src="https://github.com/user-attachments/assets/9d219b45-308d-4bd5-ab50-6ad8726f1df9" />
 
@@ -14,7 +14,7 @@ npm run dev
 
 ## Features
 
-- **40 Interactive Lessons across 8 Sections**:
+- **45 Interactive Lessons across 9 Sections**:
   1. **Sorting** (0–4): Sort Ascending, Sort Descending, Sort Custom, Sort Lambda, Sorted Copy
   2. **Pythonic Code** (5–10): Unpacking, Loop Unpacking, Enumerate, Zip, Inequality, Min Max Shortcut
   3. **Lists** (11–16): Resizable List Part 1 & 2, List Concat, List Initialization, List Clone, List Comprehension
@@ -23,6 +23,7 @@ npm run dev
   6. **Hashmaps and Hashsets** (23–30): Hash Map Basics, Default Dict, Counter, Dict Comprehension, Dict Items, Hash Set Basics, Set Comprehension, Tuple Keys
   7. **Heaps / Priority Queues** (31–37): Heap Push, Heap Pop, Heapify, Max Heap, Custom Heap, Heap N Smallest, Heap N Largest
   8. **Sorted Dicts and Sorted Sets** (38–39): Sorted Dict Basics, Sorted Set Basics (with built-in `sortedcontainers` support!)
+  9. **Classes and Recursion** (40–44): Classes and Objects, Node Classes and None, Comparing and Hashing Objects, Nested Functions and nonlocal, Recursion Limit and @cache
 - **In-Browser Python Execution (Pyodide in a Web Worker)**:
   - Bundled locally into `public/pyodide/` — works 100% offline with zero backend needed.
   - Infinite-loop protection with a Stop button and 6-second timeout.
@@ -37,7 +38,7 @@ npm run dev
 
 - `npm run dev` — Start local development server on `http://localhost:5173`
 - `npm run build` — Type-check and create production build
-- `npm run verify` — Run automated Python verification across all 40 lessons
+- `npm run verify` — Run automated Python verification across all 45 lessons
 
 ## License
 
