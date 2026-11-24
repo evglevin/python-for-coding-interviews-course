@@ -9,6 +9,7 @@ export const PYTHON_HARNESS = `
 import io
 import json
 import linecache
+import sys
 import time
 import traceback
 from contextlib import redirect_stdout, redirect_stderr
@@ -31,6 +32,15 @@ def _normalize_output(text):
     return "\\n".join(line.rstrip() for line in text.strip().splitlines())
 
 def _run_user_code(user_code, mode, expected_output, test_cases_json):
+    # The interpreter is reused across runs, so undo process-wide changes a
+    # learner's code makes (sys.setrecursionlimit) before the next run.
+    saved_recursion_limit = sys.getrecursionlimit()
+    try:
+        return _grade(user_code, mode, expected_output, test_cases_json)
+    finally:
+        sys.setrecursionlimit(saved_recursion_limit)
+
+def _grade(user_code, mode, expected_output, test_cases_json):
     start = time.perf_counter()
     stdout_buf = io.StringIO()
     stderr_buf = io.StringIO()
