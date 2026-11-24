@@ -114,7 +114,7 @@ export const TopBar = React.memo(function TopBar({
           aria-label={
             sidebarOpen
               ? 'Hide lessons sidebar'
-              : `Show lessons sidebar, ${solvedCount} of ${totalLessons} lessons solved`
+              : `Show lessons sidebar, ${solvedCount}/${totalLessons} lessons solved`
           }
         >
           {sidebarOpen ? (
@@ -250,9 +250,9 @@ export const TopBar = React.memo(function TopBar({
               title={timerRunning ? 'Pause timer' : 'Start timer'}
             >
               {timerRunning ? (
-                <Pause className="h-3.5 w-3.5 text-amber-400" />
+                <Pause className="h-3.5 w-3.5 text-warning" />
               ) : (
-                <Play className="h-3.5 w-3.5 text-emerald-500" />
+                <Play className="h-3.5 w-3.5 text-success" />
               )}
             </button>
             <span className="min-w-[42px] text-center font-mono text-xs font-medium text-[var(--text-primary)]">

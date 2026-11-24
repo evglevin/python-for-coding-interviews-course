@@ -110,8 +110,8 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                   <span
                     className={`rounded-full px-1.5 py-0.2 font-mono text-[10px] font-semibold ${
                       result?.allTestsPassed
-                        ? 'bg-emerald-500/15 text-emerald-500'
-                        : 'bg-rose-500/15 text-rose-400'
+                        ? 'bg-emerald-500/15 text-success'
+                        : 'bg-rose-500/15 text-danger'
                     }`}
                   >
                     {passedTests}/{totalTests}
@@ -147,12 +147,12 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                     className="flex items-start gap-2 rounded-lg border border-rose-500/30 p-3 text-xs"
                     style={{ backgroundColor: 'var(--accent-red-bg)' }}
                   >
-                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-400" />
+                    <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-danger" />
                     <div className="min-w-0 flex-1">
-                      <div className="mb-1 font-semibold text-rose-400">
+                      <div className="mb-1 font-semibold text-danger">
                         Runtime Error
                       </div>
-                      <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-[12px] leading-relaxed text-rose-300">
+                      <pre className="overflow-x-auto whitespace-pre-wrap font-mono text-[12px] leading-relaxed text-danger-soft">
                         {result.error}
                       </pre>
                     </div>
@@ -161,8 +161,8 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                   <div
                     className={`flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-semibold ${
                       result.outputMatches
-                        ? 'border-emerald-500/30 text-emerald-500'
-                        : 'border-amber-500/30 text-amber-400'
+                        ? 'border-emerald-500/30 text-success'
+                        : 'border-amber-500/30 text-warning'
                     }`}
                     style={{
                       backgroundColor: result.outputMatches
@@ -187,7 +187,7 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                       <button
                         type="button"
                         onClick={onSubmit}
-                        className="rounded bg-emerald-600 px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-emerald-500 cursor-pointer"
+                        className="rounded bg-[#237a4b] px-2.5 py-1 text-[11px] font-semibold text-white hover:bg-[#1d6e43] cursor-pointer"
                       >
                         Submit Now
                       </button>
@@ -252,16 +252,16 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                     >
                       <div className="flex items-center gap-2">
                         {result.allTestsPassed ? (
-                          <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                          <CheckCircle2 className="h-5 w-5 text-success" />
                         ) : (
-                          <XCircle className="h-5 w-5 text-rose-400" />
+                          <XCircle className="h-5 w-5 text-danger" />
                         )}
                         <div>
                           <div
                             className={`text-sm font-bold ${
                               result.allTestsPassed
-                                ? 'text-emerald-500'
-                                : 'text-rose-400'
+                                ? 'text-success'
+                                : 'text-danger'
                             }`}
                           >
                             {result.allTestsPassed ? 'Accepted!' : 'Wrong Answer'}
@@ -276,7 +276,7 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                         <button
                           type="button"
                           onClick={onNextLesson}
-                          className="flex items-center gap-1.5 rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-emerald-500 cursor-pointer"
+                          className="flex items-center gap-1.5 rounded-md bg-[#237a4b] px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#1d6e43] cursor-pointer"
                         >
                           <span>Next Lesson</span>
                           <ArrowRight className="h-3.5 w-3.5" />
@@ -315,7 +315,7 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                         </div>
 
                         {selectedTest.message && (
-                          <div className="rounded border border-amber-500/30 bg-amber-500/10 px-2.5 py-1.5 text-amber-300">
+                          <div className="rounded border border-amber-500/30 bg-amber-500/10 px-2.5 py-1.5 text-warning-soft">
                             {selectedTest.message}
                           </div>
                         )}
@@ -343,8 +343,8 @@ export const ConsolePanel = React.memo(function ConsolePanel({
                             <pre
                               className={`overflow-x-auto rounded-md border p-2 font-mono text-[12px] ${
                                 selectedTest.passed
-                                  ? 'text-emerald-400'
-                                  : 'text-rose-400'
+                                  ? 'text-success-soft'
+                                  : 'text-danger'
                               }`}
                               style={{
                                 backgroundColor: 'var(--bg-code)',
@@ -372,11 +372,11 @@ export const ConsolePanel = React.memo(function ConsolePanel({
 
                         {selectedTest.error && (
                           <div>
-                            <div className="mb-1 text-[11px] font-medium text-rose-400">
+                            <div className="mb-1 text-[11px] font-medium text-danger">
                               Traceback
                             </div>
                             <pre
-                              className="overflow-x-auto whitespace-pre-wrap rounded-md border border-rose-500/30 p-2 font-mono text-[11.5px] text-rose-300"
+                              className="overflow-x-auto whitespace-pre-wrap rounded-md border border-rose-500/30 p-2 font-mono text-[11.5px] text-danger-soft"
                               style={{ backgroundColor: 'var(--bg-code)' }}
                             >
                               {selectedTest.error}
@@ -419,7 +419,7 @@ export const ConsolePanel = React.memo(function ConsolePanel({
             <button
               type="button"
               onClick={onStop}
-              className="flex items-center gap-1.5 rounded-md bg-rose-600 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-rose-500 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-md bg-rose-700 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-rose-600 cursor-pointer"
             >
               <Square className="h-3 w-3 fill-current" />
               <span>Stop</span>
@@ -444,7 +444,7 @@ export const ConsolePanel = React.memo(function ConsolePanel({
               <button
                 type="button"
                 onClick={onSubmit}
-                className="flex items-center gap-1.5 rounded-md bg-[#2b8a57] px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#239c5b] cursor-pointer"
+                className="flex items-center gap-1.5 rounded-md bg-[#237a4b] px-4 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-[#1d6e43] cursor-pointer"
                 title="Run all tests & submit (Cmd/Ctrl + Shift + Enter)"
               >
                 <Send className="h-3.5 w-3.5" />

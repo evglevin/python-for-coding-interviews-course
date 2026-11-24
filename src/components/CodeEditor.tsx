@@ -151,7 +151,7 @@ function makeEditorTheme(theme: 'dark' | 'light', fontSize: number) {
       },
       '.cm-gutters': {
         backgroundColor: isDark ? '#1e1e22' : '#fafafa',
-        color: isDark ? '#63636e' : '#9ca3af',
+        color: isDark ? '#8b8b96' : '#6b7280',
         borderRight: isDark ? '1px solid #2a2a30' : '1px solid #e5e7eb',
         paddingRight: '4px',
       },
@@ -302,8 +302,8 @@ const STATUS_UI: Partial<
     { Icon: typeof Loader2; iconClass: string; label: string; labelClass: string }
   >
 > = {
-  loading: { Icon: Loader2, iconClass: 'animate-spin text-amber-400', label: 'Loading Python...', labelClass: 'text-[var(--text-muted)]' },
-  error: { Icon: AlertCircle, iconClass: 'text-rose-500', label: 'Runtime Error', labelClass: 'text-rose-400' },
+  loading: { Icon: Loader2, iconClass: 'animate-spin text-warning', label: 'Loading Python...', labelClass: 'text-[var(--text-muted)]' },
+  error: { Icon: AlertCircle, iconClass: 'text-danger', label: 'Runtime Error', labelClass: 'text-danger' },
 };
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({
@@ -358,6 +358,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     ]);
 
     const extensions = [
+      EditorView.contentAttributes.of({ 'aria-label': 'Python code editor' }),
       lineNumbers(),
       highlightActiveLineGutter(),
       history(),

@@ -219,12 +219,12 @@ const lightHighlightStyle = HighlightStyle.define([
   { tag: t.keyword, color: '#7c3aed' },
   { tag: [t.name, t.propertyName], color: '#1e293b' },
   { tag: [t.function(t.variableName), t.function(t.propertyName)], color: '#b45309' },
-  { tag: [t.typeName, t.className, t.namespace], color: '#0284c7' },
-  { tag: t.number, color: '#059669' },
+  { tag: [t.typeName, t.className, t.namespace], color: '#0369a1' },
+  { tag: t.number, color: '#047857' },
   { tag: [t.comment], color: '#15803d', fontStyle: 'italic' },
   { tag: [t.string, t.inserted], color: '#c2410c' },
   { tag: [t.atom, t.bool, t.null, t.self, t.special(t.variableName)], color: '#2563eb' },
-  { tag: t.invalid, color: '#dc2626' },
+  { tag: t.invalid, color: '#b91c1c' },
 ]);
 
 export const pythonHighlighting = {

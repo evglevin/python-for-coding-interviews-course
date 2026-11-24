@@ -76,8 +76,8 @@ export const PythonCodeBlock: React.FC<PythonCodeBlockProps> = ({
           >
             {copied ? (
               <>
-                <Check className="h-3.5 w-3.5 text-emerald-500" />
-                <span className="text-emerald-500">Copied</span>
+                <Check className="h-3.5 w-3.5 text-success" />
+                <span className="text-success">Copied</span>
               </>
             ) : (
               <>

@@ -121,7 +121,7 @@ export const LessonPane = React.memo(function LessonPane({
                 {lesson.title}
               </h1>
               {isSolved && (
-                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-semibold text-emerald-500">
+                <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-0.5 text-xs font-semibold text-success">
                   <CheckCircle2 className="h-3.5 w-3.5" />
                   Solved
                 </span>

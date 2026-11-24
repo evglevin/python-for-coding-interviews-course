@@ -182,7 +182,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
                       <span
                         className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-[10.5px] font-mono font-bold ${
                           isSectionComplete
-                            ? 'bg-emerald-500/20 text-emerald-500'
+                            ? 'bg-emerald-500/20 text-success'
                             : 'bg-accent/15 text-accent'
                         }`}
                       >
@@ -196,7 +196,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
                       <span
                         className={`rounded-full px-1.5 py-0.5 font-mono text-[10px] font-semibold ${
                           isSectionComplete
-                            ? 'bg-emerald-500/15 text-emerald-500'
+                            ? 'bg-emerald-500/15 text-success'
                             : 'text-[var(--text-muted)]'
                         }`}
                         style={
@@ -254,7 +254,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
                             <span
                               className={`w-5 shrink-0 text-right font-mono text-[11px] ${
                                 isSolved
-                                  ? 'text-emerald-500'
+                                  ? 'text-success'
                                   : isCurrent
                                   ? 'text-accent'
                                   : 'text-[var(--text-muted)]'
@@ -266,7 +266,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
                               {lesson.title}
                             </span>
                             {isSolved && (
-                              <Check className="h-3.5 w-3.5 shrink-0 text-emerald-500 stroke-[2.5]" />
+                              <Check className="h-3.5 w-3.5 shrink-0 text-success stroke-[2.5]" />
                             )}
                           </a>
                         );
@@ -290,7 +290,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
       >
         {confirmReset ? (
           <div className="flex w-full items-center justify-between gap-1.5">
-            <span className="text-[11px] text-rose-400">Reset all?</span>
+            <span className="text-[11px] text-danger">Reset all?</span>
             <div className="flex items-center gap-1">
               <button
                 type="button"
@@ -298,7 +298,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
                   onResetProgress();
                   setConfirmReset(false);
                 }}
-                className="rounded bg-rose-600 px-2 py-0.5 text-[11px] font-medium text-white hover:bg-rose-500 cursor-pointer"
+                className="rounded bg-rose-700 px-2 py-0.5 text-[11px] font-medium text-white hover:bg-rose-600 cursor-pointer"
               >
                 Confirm
               </button>
@@ -316,7 +316,7 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
             <button
               type="button"
               onClick={() => setConfirmReset(true)}
-              className="flex items-center gap-1.5 rounded px-1.5 py-1 text-[11.5px] text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-hover)] hover:text-rose-400 cursor-pointer"
+              className="flex items-center gap-1.5 rounded px-1.5 py-1 text-[11.5px] text-[var(--text-muted)] transition-colors hover:bg-[var(--bg-hover)] hover:text-danger cursor-pointer"
             >
               <Trash2 className="h-3.5 w-3.5" />
               <span>Reset Progress</span>
@@ -326,9 +326,9 @@ export const CurriculumSidebar = React.memo(function CurriculumSidebar({
               onClick={saveProgressLink}
               className={`flex items-center gap-1.5 rounded px-1.5 py-1 text-[11.5px] transition-colors hover:bg-[var(--bg-hover)] cursor-pointer ${
                 linkStatus === 'copied'
-                  ? 'text-emerald-500'
+                  ? 'text-success'
                   : linkStatus === 'failed'
-                  ? 'text-rose-400'
+                  ? 'text-danger'
                   : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
               }`}
               title="Copy a link that moves your solved lessons and code to another device"
