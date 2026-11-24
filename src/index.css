@@ -260,8 +260,7 @@ body,
 }
 
 .pci-search-count {
-  min-width: 72px;
-  padding: 0 6px;
+  padding: 0 8px;
   color: var(--text-secondary);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;

@@ -123,10 +123,10 @@ class SearchPanel implements Panel {
     findRow.className = 'pci-search-row';
     findRow.append(
       findBox,
-      this.count,
       iconButton('arrowUp', 'Previous match (Shift+Enter)', () => findPrevious(view)),
       iconButton('arrowDown', 'Next match (Enter)', () => findNext(view)),
       iconButton('selectAll', 'Select all matches', () => selectMatches(view)),
+      this.count,
       iconButton('x', 'Close (Escape)', () => closeSearchPanel(view), 'pci-search-close')
     );
 
