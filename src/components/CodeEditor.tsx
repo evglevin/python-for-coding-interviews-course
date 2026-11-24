@@ -33,6 +33,7 @@ import {
   completionKeymap,
 } from '@codemirror/autocomplete';
 import { searchKeymap, highlightSelectionMatches } from '@codemirror/search';
+import { appSearch } from '../lib/searchPanel';
 import {
   pythonHighlighting,
   pythonLanguageSupport,
@@ -172,6 +173,14 @@ function makeEditorTheme(theme: 'dark' | 'light', fontSize: number) {
       '.cm-matchingBracket': {
         backgroundColor: isDark ? 'rgba(77, 142, 255, 0.25)' : 'rgba(7, 102, 255, 0.18)',
         outline: isDark ? '1px solid rgba(77, 142, 255, 0.6)' : '1px solid rgba(7, 102, 255, 0.5)',
+      },
+      '.cm-searchMatch': {
+        backgroundColor: isDark ? 'rgba(234, 179, 8, 0.22)' : 'rgba(234, 179, 8, 0.28)',
+        borderRadius: '2px',
+      },
+      '.cm-searchMatch.cm-searchMatch-selected': {
+        backgroundColor: isDark ? 'rgba(249, 115, 22, 0.45)' : 'rgba(249, 115, 22, 0.35)',
+        outline: isDark ? '1px solid rgba(251, 146, 60, 0.8)' : '1px solid rgba(234, 88, 12, 0.6)',
       },
       '.cm-tooltip': {
         backgroundColor: isDark ? '#25252b' : '#ffffff',
@@ -382,6 +391,7 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
       crosshairCursor(),
       highlightActiveLine(),
       highlightSelectionMatches(),
+      appSearch,
       pythonLanguageSupport,
       runShortcut,
       Prec.high(
